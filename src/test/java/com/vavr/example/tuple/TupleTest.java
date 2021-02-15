@@ -65,6 +65,53 @@ public class TupleTest {
         assertThat(Tuple0.instance().apply(() -> 1) == 1).isTrue();
     }
 
+    @Test
+    public void shouldCreateSingle() {
+        assertThat(tuple1().toString()).isEqualTo("(1)");
+    }
+
+    @Test
+    public void shouldHashTuple1() {
+        final Tuple1<?> t = tuple1();
+        assertThat(t.hashCode()).isEqualTo(Tuple.hash(t._1));
+    }
+
+    @Test
+    public void shouldReturnCorrectArityOfTuple1() {
+        assertThat(tuple1().arity()).isEqualTo(1);
+    }
+
+    @SuppressWarnings("EqualsWithItself")
+    @Test
+    public void shouldEqualSameTuple1Instances() {
+        final Tuple1<?> t = tuple1();
+        assertThat(t.equals(t)).isTrue();
+    }
+
+    @SuppressWarnings("ObjectEqualsNull")
+    @Test
+    public void shouldNotTuple1EqualsNull() {
+        assertThat(tuple1().equals(null)).isFalse();
+    }
+
+    @Test
+    public void shouldNotTuple1EqualsObject() {
+        assertThat(tuple1().equals(new Object())).isFalse();
+    }
+
+    @Test
+    public void shouldTuple1EqualTuple1() {
+        assertThat(tuple1().equals(tuple1())).isTrue();
+    }
+
+    @Test
+    public void shouldNarrowTuple1() {
+        final Tuple1<Double> wideTuple = Tuple.of(1.0d);
+        final Tuple1<Number> narrowTuple = Tuple.narrow(wideTuple);
+        assertThat(narrowTuple._1()).isEqualTo(1.0d);
+    }
+
+
     private Tuple0 tuple0() {
         return Tuple.empty();
     }
