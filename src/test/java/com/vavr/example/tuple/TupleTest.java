@@ -5,6 +5,7 @@ import io.vavr.collection.List;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
+import java.util.AbstractMap;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,6 +64,59 @@ public class TupleTest {
     @Test
     public void shouldApplyTuple0() {
         assertThat(Tuple0.instance().apply(() -> 1) == 1).isTrue();
+    }
+
+    @Test
+    public void shouldCreatePair() {
+        assertThat(tuple2().toString()).isEqualTo("(1, 2)");
+    }
+
+    @Test
+    public void shouldCreateTuple2FromEntry() {
+        final Tuple2<Integer, Integer> tuple2FromEntry = Tuple.fromEntry(new AbstractMap.SimpleEntry<>(1, 2));
+        assertThat(tuple2FromEntry.toString()).isEqualTo("(1, 2)");
+    }
+
+    @Test
+    public void shouldHashTuple2() {
+        final Tuple2<?, ?> t = tuple2();
+        assertThat(t.hashCode()).isEqualTo(Objects.hash(t._1, t._2));
+    }
+
+    @Test
+    public void shouldReturnCorrectArityOfTuple2() {
+        assertThat(tuple2().arity()).isEqualTo(2);
+    }
+
+    @SuppressWarnings("EqualsWithItself")
+    @Test
+    public void shouldEqualSameTuple2Instances() {
+        final Tuple2<?, ?> t = tuple2();
+        assertThat(t.equals(t)).isTrue();
+    }
+
+    @SuppressWarnings("ObjectEqualsNull")
+    @Test
+    public void shouldNotTuple2EqualsNull() {
+        assertThat(tuple2().equals(null)).isFalse();
+    }
+
+    @Test
+    public void shouldNotTuple2EqualsObject() {
+        assertThat(tuple2().equals(new Object())).isFalse();
+    }
+
+    @Test
+    public void shouldTuple2EqualTuple2() {
+        assertThat(tuple2().equals(tuple2())).isTrue();
+    }
+
+    @Test
+    public void shouldNarrowTuple2() {
+        final Tuple2<String, Double> wideTuple = Tuple.of("test", 1.0d);
+        final Tuple2<CharSequence, Number> narrowTuple = Tuple.narrow(wideTuple);
+        assertThat(narrowTuple._1()).isEqualTo("test");
+        assertThat(narrowTuple._2()).isEqualTo(1.0d);
     }
 
     private Tuple0 tuple0() {
