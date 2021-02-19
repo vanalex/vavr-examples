@@ -165,6 +165,53 @@ public class TupleTest {
         assertThat(narrowTuple._1()).isEqualTo(1.0d);
     }
 
+    @Test
+    public void shouldCreateTriple() {
+        assertThat(tuple3().toString()).isEqualTo("(1, 2, 3)");
+    }
+
+    @Test
+    public void shouldHashTuple3() {
+        final Tuple3<?, ?, ?> t = tuple3();
+        assertThat(t.hashCode()).isEqualTo(Objects.hash(t._1, t._2, t._3));
+    }
+
+    @Test
+    public void shouldReturnCorrectArityOfTuple3() {
+        assertThat(tuple3().arity()).isEqualTo(3);
+    }
+
+    @SuppressWarnings("EqualsWithItself")
+    @Test
+    public void shouldEqualSameTuple3Instances() {
+        final Tuple3<?, ?, ?> t = tuple3();
+        assertThat(t.equals(t)).isTrue();
+    }
+
+    @SuppressWarnings("ObjectEqualsNull")
+    @Test
+    public void shouldNotTuple3EqualsNull() {
+        assertThat(tuple3().equals(null)).isFalse();
+    }
+
+    @Test
+    public void shouldNotTuple3EqualsObject() {
+        assertThat(tuple3().equals(new Object())).isFalse();
+    }
+
+    @Test
+    public void shouldTuple3EqualTuple3() {
+        assertThat(tuple3().equals(tuple3())).isTrue();
+    }
+
+    @Test
+    public void shouldNarrowTuple3() {
+        final Tuple3<String, Double, Float> wideTuple = Tuple.of("zero", 1.0D, 2.0F);
+        final Tuple3<CharSequence, Number, Number> narrowTuple = Tuple.narrow(wideTuple);
+        assertThat(narrowTuple._1()).isEqualTo("zero");
+        assertThat(narrowTuple._2()).isEqualTo(1.0D);
+        assertThat(narrowTuple._3()).isEqualTo(2.0F);
+    }
 
     private Tuple0 tuple0() {
         return Tuple.empty();
